@@ -1,0 +1,27 @@
+import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+
+export default class Jobs extends BaseSchema {
+  protected tableName = 'jobs'
+
+  public async up() {
+    this.schema.createTable(this.tableName, (table) => {
+      table.increments('id')
+
+      table.string('name')
+      table.json('data').nullable()
+      table.string('cron')
+
+      table.timestamp('next_run_at', { useTz: true }).nullable()
+      table.timestamp('last_run_at', { useTz: true }).nullable()
+      table.timestamp('last_finished_at', { useTz: true }).nullable()
+      table.timestamp('locked_at', { useTz: true }).nullable()
+
+      table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
+      table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())
+    })
+  }
+
+  public async down() {
+    this.schema.dropTable(this.tableName)
+  }
+}

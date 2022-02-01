@@ -1,0 +1,7 @@
+import { BaseJob } from '@ioc:Adonis/Scheduler/Job'
+
+export default class {{ filename }} implements BaseJob {
+  protected async handle() {
+    // your job here
+  }
+}

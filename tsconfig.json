@@ -4,17 +4,10 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "useDefineForClassFields": true,
-    "types": [
-      "@adonisjs/core",
-      "@adonisjs/lucid"
-    ]
+    "useDefineForClassFields": true
   },
   "files": [
-    "./node_modules/@adonisjs/core/build/adonis-typings/index.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
+    "./node_modules/@adonisjs/core/build/adonis-typings/index.d.ts",
+    "./node_modules/@adonisjs/lucid/build/adonis-typings/index.d.ts"
   ]
 }

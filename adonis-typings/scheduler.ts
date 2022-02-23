@@ -1,6 +1,7 @@
-declare module '@ioc:Adonis/Scheduler/Scheduler' {
-  import { BaseJob } from '@ioc:Adonis/Scheduler/Job'
+declare module '@ioc:Vidiemme/Scheduler/Scheduler' {
+  export interface SchedulerContract {
+    checkJobs()
+  }
 
-  export const JobMap: Map<string, BaseJob>
-  export const checkJobs: () => void
+  export const SchedulerInstance: SchedulerContract
 }

@@ -27,14 +27,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.vidiemme.it:Vidiemme/practice/node/adonis-packages/scheduler.git"
+    "url": "git@github.com:vidiemme/adonis-lucid-scheduler.git"
   },
   "author": "Vidiemme",
   "license": "MIT",
   "bugs": {
-    "url": "https://git.vidiemme.it/Vidiemme/practice/node/adonis-packages/scheduler/-/issues"
+    "url": "https://github.com/vidiemme/adonis-lucid-scheduler/-/issues"
   },
-  "homepage": "https://git.vidiemme.it/Vidiemme/practice/node/adonis-packages/scheduler",
+  "homepage": "https://github.com/vidiemme/adonis-lucid-scheduler",
   "dependencies": {
     "@adonisjs/assembler": "^5.4.1",
     "@breejs/later": "^4.1.0",

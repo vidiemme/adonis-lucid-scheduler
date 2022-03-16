@@ -13,13 +13,10 @@ implemented so that, in case of multiple server instances, only one node takes o
 
 ## Installation
 
-Add the following line to the `. npmrc` file \
-`@vidiemme:registry=https://git.vidiemme.it/api/v4/packages/npm/`
-
-Install the package with the command \
+Install the package \
 `npm i @vidiemme/adonis-scheduler`
 
-Configure the package with the command \
+Configure the package \
 `node ace configure @vidiemme/adonis-scheduler`
 
 Perform migration \
@@ -30,11 +27,22 @@ Perform migration \
 Make a job handler with the command `node ace make:job << job name >>`. \
 Then you must record the list of your jobs in the map inside the file `start/scheduler.ts`.
 
-The Job can interface with any resource on the server. \
+e.g.:
+
+```typescript
+import JobClass from 'App/Jobs/JobClass'
+JobMap.set('jobName', JobClass)
+```
+
+The Job can work with any resource on the server. \
 You can also pass metadata in Json format to the `handle` method.
 
 ```typescript
-public async handle(params) {
+interface MyCustomInterface {
+  ...
+}
+
+public async handle(params: MyCustomInterface) {
   // your job here
 }
 ```

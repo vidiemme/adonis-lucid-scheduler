@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:vidiemme/adonis-lucid-scheduler.git"
+    "url": "git+ssh://git@github.com/vidiemme/adonis-lucid-scheduler.git"
   },
   "author": "Vidiemme",
   "license": "MIT",

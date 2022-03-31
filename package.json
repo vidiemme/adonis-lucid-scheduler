@@ -1,6 +1,6 @@
 {
   "name": "@vidiemme/adonis-scheduler",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Adonis Scheduler",
   "main": "build/providers/SchedulerProvider.js",
   "files": [

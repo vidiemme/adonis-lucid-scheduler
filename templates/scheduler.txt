@@ -1,4 +1,4 @@
-import { JobMap } from '@ioc:Adonis/Scheduler/Scheduler'
+import { JobMap } from '@ioc:Vidiemme/Scheduler/Job'
 
 /*
 |--------------------------------------------------------------------------

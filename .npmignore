@@ -12,7 +12,6 @@ test/functional/database
 *.sublime-project
 *.sublime-workspace
 *.log
-build
 dist
 yarn.lock
 shrinkwrap.yaml

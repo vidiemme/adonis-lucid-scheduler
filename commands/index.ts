@@ -1,1 +1,1 @@
-export default ['@vidiemme/adonis-mysql-scheduler/build/commands/MakeJob']
+export default ['@vidiemme/adonis-scheduler/commands/MakeJob']

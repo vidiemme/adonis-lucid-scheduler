@@ -1,7 +1,7 @@
-import { BaseJob } from '@ioc:Adonis/Scheduler/Job'
+import { JobHandler } from '@ioc:Vidiemme/Scheduler/Job'
 
-export default class {{ filename }} implements BaseJob {
-  protected async handle() {
+export default class {{ filename }} extends JobHandler {
+  public async handle() {
     // your job here
   }
 }

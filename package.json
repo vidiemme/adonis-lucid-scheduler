@@ -1,44 +1,49 @@
 {
-  "name": "@vidiemme/adonis-mysql-scheduler",
-  "version": "1.0.0",
-  "description": "Adonis Scheduler running on MySql Database",
-  "main": "build/providers/MysqlSchedulerProvider.js",
+  "name": "@vidiemme/adonis-scheduler",
+  "version": "1.0.5",
+  "description": "Adonis Scheduler",
+  "main": "providers/SchedulerProvider.js",
   "files": [
-    "build/adonis-typings",
-    "build/commands",
-    "build/providers",
-    "build/src",
-    "build/instructions.js",
-    "build/templates",
-    "build/instructions.md"
+    "adonis-typings",
+    "commands",
+    "providers",
+    "src",
+    "instructions.js",
+    "templates",
+    "instructions.md"
   ],
-  "typings": "./build/adonis-typings/index.d.ts",
+  "typings": "./adonis-typings/index.d.ts",
   "scripts": {
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
     "pretest": "npm run lint",
     "lint": "eslint . --ext=.ts",
     "clean": "rm -rf build",
-    "compile": "npm run lint && npm run clean && tsc && npm run copyfiles",
-    "copyfiles": "copyfiles \"templates/**/*.txt\" \"instructions.md\" build",
+    "compile": "npm run lint && npm run clean && node scripts/build.js && npm run copyfiles",
+    "copyfiles": "copyfiles \"templates/**/*.txt\" \"instructions.md\" \"README.md\" build",
     "build": "npm run compile",
     "version": "npm run build",
     "format": "prettier --write .",
     "test": "node japaFile.js"
   },
-  "types": "./build/adonis-typings/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "TODO --- git+ssh://git@github.com/lookinlab/adonis-lucid-soft-deletes.git"
+    "url": "git+ssh://git@github.com/vidiemme/adonis-lucid-scheduler.git"
   },
-  "keywords": [
-    "adonisjs",
-    "adonis-scheduler",
-    "adonis-mysql-scheduler"
-  ],
-  "author": "LookinGit",
+  "author": "Vidiemme",
   "license": "MIT",
   "bugs": {
-    "url": "TODO --- https://github.com/lookinlab/adonis-lucid-soft-deletes/issues"
+    "url": "https://github.com/vidiemme/adonis-lucid-scheduler/-/issues"
+  },
+  "homepage": "https://github.com/vidiemme/adonis-lucid-scheduler",
+  "dependencies": {
+    "@adonisjs/assembler": "^5.4.1",
+    "@breejs/later": "^4.1.0",
+    "cron-parser": "^4.2.1",
+    "node-schedule": "^2.1.0"
+  },
+  "peerDependencies": {
+    "@adonisjs/core": "^5.1.0",
+    "@adonisjs/lucid": "^16.3.2"
   },
   "devDependencies": {
     "@adonisjs/ace": "^11.0.4",
@@ -60,18 +65,11 @@
     "eslint-plugin-adonis": "^1.3.3",
     "eslint-plugin-prettier": "^4.0.0",
     "japa": "^3.1.1",
+    "mrm": "^3.0.10",
     "prettier": "^2.5.1",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.2.0",
     "typescript": "^4.4.3"
-  },
-  "dependencies": {
-    "@breejs/later": "^4.1.0",
-    "cron-parser": "^4.2.1",
-    "node-schedule": "^2.1.0"
-  },
-  "peerDependencies": {
-    "@adonisjs/core": "^5.1.0"
   },
   "publishConfig": {
     "tag": "latest",
@@ -80,20 +78,19 @@
   "directories": {
     "test": "test"
   },
+  "keywords": [
+    "adonisjs",
+    "adonis-scheduler"
+  ],
   "adonisjs": {
-    "instructions": "./build/instructions.js",
-    "instructionsMd": "./build/instructions.md",
-    "types": "@vidiemme/adonis-mysql-scheduler",
+    "instructions": "./instructions.js",
+    "instructionsMd": "./instructions.md",
+    "types": "@vidiemme/adonis-scheduler",
     "providers": [
-      "@vidiemme/adonis-mysql-scheduler"
+      "@vidiemme/adonis-scheduler"
     ],
     "commands": [
-      "@vidiemme/adonis-mysql-scheduler/build/commands"
-    ],
-    "templates": {
-      "start": [
-        "scheduler.txt"
-      ]
-    }
+      "@vidiemme/adonis-scheduler/commands"
+    ]
   }
 }

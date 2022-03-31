@@ -1,9 +1,10 @@
-/// <reference path="../../adonis-typings/index.ts" />
-
 import { DateTime } from 'luxon'
+
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
-export class JobModel extends BaseModel {
+export class DBJobModel extends BaseModel {
+  public static table = 'jobs'
+
   @column({ isPrimary: true })
   public id: number
 

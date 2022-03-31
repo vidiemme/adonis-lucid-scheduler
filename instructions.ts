@@ -2,6 +2,10 @@ import { join } from 'path'
 import * as sinkStatic from '@adonisjs/sink'
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 
+function getStub(...relativePaths: string[]) {
+  return join(__dirname, 'templates', ...relativePaths)
+}
+
 /**
  * Create the migration file
  */
@@ -13,11 +17,7 @@ function makeUsersMigration(
   const migrationsDirectory = app.directoriesMap.get('migrations') || 'database'
   const migrationPath = join(migrationsDirectory, `${Date.now()}_jobs.ts`)
 
-  const template = new sink.files.MustacheFile(
-    projectRoot,
-    migrationPath,
-    join(__dirname, 'templates', 'migration.txt')
-  )
+  const template = new sink.files.MustacheFile(projectRoot, migrationPath, getStub('migration.txt'))
   if (template.exists()) {
     sink.logger.action('create').skipped(`${migrationPath} file already exists`)
     return
@@ -30,14 +30,24 @@ function makeUsersMigration(
 /**
  * Register preload
  */
-function registerPreload(projectRoot: string, sink: typeof sinkStatic) {
-  const packageName = '@vidiemme/adonis-mysql-scheduler'
+function registerPreload(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {
+  const preloadFilePath = app.makePath('start/scheduler.ts')
+  const schedulerPreloadFile = new sink.files.MustacheFile(
+    projectRoot,
+    preloadFilePath,
+    getStub('scheduler.txt')
+  )
 
-  const rcFile = new sink.files.AdonisRcFile(projectRoot)
-  rcFile.setPreload('./start/scheduler', ['web'])
-  rcFile.commit()
+  schedulerPreloadFile.overwrite = true
 
-  sink.logger.action('registered').succeeded(packageName)
+  schedulerPreloadFile.commit()
+  sink.logger.action('create').succeeded('start/scheduler.ts')
+
+  const preload = new sink.files.AdonisRcFile(projectRoot)
+  preload.setPreload('./start/scheduler')
+  preload.commit()
+
+  sink.logger.action('update').succeeded('.adonisrc.json')
 }
 
 /**
@@ -49,5 +59,5 @@ export default async function instructions(
   sink: typeof sinkStatic
 ) {
   makeUsersMigration(projectRoot, app, sink)
-  registerPreload(projectRoot, sink)
+  registerPreload(projectRoot, app, sink)
 }

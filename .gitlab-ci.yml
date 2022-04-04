@@ -6,9 +6,10 @@ publish:
       changes:
         - package.json
   script:
-    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
     - npm ci
     - npm run build
-    - npm publish build
+    - cd build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish
   tags:
     - k8s

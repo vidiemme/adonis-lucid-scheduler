@@ -52,14 +52,14 @@ Jobs are managed directly in DB:
 - the `data` field is optional and can contain a json of parameters to pass to the JobHandler
 - The `cron` field represents how often to run the job.
 
-[npm-image]: https://img.shields.io/npm/v/adonis-lucid-soft-deletes?logo=npm&style=for-the-badge
+[npm-image]: https://img.shields.io/npm/v/@vidiemme/adonis-scheduler?logo=npm&style=for-the-badge
 
-[npm-url]: https://www.npmjs.com/package/adonis-lucid-soft-deletes
+[npm-url]: https://www.npmjs.com/package/@vidiemme/adonis-scheduler
 
-[license-image]: https://img.shields.io/npm/l/adonis-lucid-soft-deletes?style=for-the-badge&color=blueviolet
+[license-image]: https://img.shields.io/npm/l/@vidiemme/adonis-scheduler?style=for-the-badge&color=blueviolet
 
-[license-url]: https://github.com/lookinlab/adonis-lucid-soft-deletes/blob/develop/LICENSE.md
+[license-url]: https://github.com/vidiemme/adonis-lucid-scheduler/blob/main/LICENSE.md
 
-[typescript-image]: https://img.shields.io/npm/types/adonis-lucid-soft-deletes?color=294E80&label=%20&logo=typescript&style=for-the-badge
+[typescript-image]: https://img.shields.io/npm/types/@vidiemme/adonis-scheduler?color=294E80&label=%20&logo=typescript&style=for-the-badge
 
-[typescript-url]: https://github.com/lookinlab
+[typescript-url]: https://github.com/vidiemme

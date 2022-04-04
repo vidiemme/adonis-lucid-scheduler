@@ -48,3 +48,5 @@ publish:
       else
         echo "Version ${NPM_PACKAGE_VERSION} of ${NPM_PACKAGE_NAME} has already been published, so no new version has been published."
       fi
+  tags:
+    - k8s

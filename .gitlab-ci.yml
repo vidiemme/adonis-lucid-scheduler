@@ -12,15 +12,7 @@ publish:
       changes:
         - package.json
   script:
-    # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
-    - |
-      if [[ ! -f .npmrc ]]; then
-        echo 'No .npmrc found! Creating one now. Please review the following link for more information: https://docs.gitlab.com/ee/user/packages/npm_registry/index.html#project-level-npm-endpoint-1'
-        {
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
-        } >> .npmrc
-      fi
-    - echo "Created the following .npmrc:"; cat .npmrc
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
 
     # Extract a few values from package.json
     - NPM_PACKAGE_NAME=$(node -p "require('./package.json').name")

@@ -58,6 +58,6 @@ export default class SchedulerProvider {
    */
   public boot(): void {
     const { Scheduler } = this.app.container.resolveBinding('Vidiemme/Scheduler/Scheduler')
-    scheduleJob('* * * * *', Scheduler.checkJobs.bind(Scheduler))
+    scheduleJob('* * * * *', Scheduler.extractJobs.bind(Scheduler))
   }
 }

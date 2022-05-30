@@ -4,11 +4,11 @@ declare module '@ioc:Vidiemme/Scheduler/Scheduler' {
   import { DatabaseContract } from '@ioc:Adonis/Lucid/Database'
 
   export interface SchedulerInterface {
-    checkJobs()
+    extractJobs()
   }
 
   export class Scheduler implements SchedulerInterface {
     constructor(logger: LoggerContract, database: DatabaseContract, jobMap: JobMapType)
-    public checkJobs()
+    public extractJobs()
   }
 }

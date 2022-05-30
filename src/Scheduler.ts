@@ -14,7 +14,7 @@ export class Scheduler implements SchedulerInterface {
     protected jobMap: JobMapType
   ) {}
 
-  public async checkJobs() {
+  public async extractJobs() {
     const dbJobs = await DBJobModel.query()
       .whereNull('lockedAt')
       .where((query) => {

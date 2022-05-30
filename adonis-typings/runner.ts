@@ -4,11 +4,16 @@ declare module '@ioc:Vidiemme/Scheduler/Runner' {
   import { DBJobModel, JobHandler } from '@ioc:Vidiemme/Scheduler/Job'
 
   export interface RunnerInterface {
-    run(jobModel: DBJobModel, jobHandler: typeof JobHandler)
+    run()
   }
 
   export class Runner implements RunnerInterface {
-    constructor(logger: LoggerContract, database: DatabaseContract)
-    public run(jobModel: DBJobModel, jobHandler: typeof JobHandler)
+    constructor(
+      logger: LoggerContract,
+      database: DatabaseContract,
+      jobModel: DBJobModel,
+      jobHandler: typeof JobHandler
+    )
+    public run()
   }
 }

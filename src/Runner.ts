@@ -11,14 +11,19 @@ export class Runner implements RunnerInterface {
   protected jobModel: DBJobModel
   protected jobHandler: JobHandler
 
-  constructor(protected logger: LoggerContract, protected database: DatabaseContract) {}
-
-  public async run(jobModel: DBJobModel, jobHandler: typeof JobHandler) {
+  constructor(
+    protected logger: LoggerContract,
+    protected database: DatabaseContract,
+    jobModel: DBJobModel,
+    jobHandler: typeof JobHandler
+  ) {
     this.jobModel = jobModel
     this.jobHandler = new jobHandler()
 
     this.jobName = `${this.jobModel.id}_${this.jobModel.name}`
+  }
 
+  public async run() {
     const getLock = await this.lock()
     if (!getLock) {
       return

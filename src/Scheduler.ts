@@ -24,6 +24,7 @@ export class Scheduler implements SchedulerInterface {
     dbJobs.forEach((dbJob) => {
       const jobClass = this.jobMap.get(dbJob.name)
       if (!jobClass) {
+        this.logger.debug(`Scheduler - Job '${dbJob.name}' not in list`)
         // job not in list
         return
       }
@@ -34,7 +35,8 @@ export class Scheduler implements SchedulerInterface {
         return
       }
 
-      new Runner(this.logger, this.database).run(dbJob, jobClass)
+      this.logger.debug(`Scheduler - Running job '${dbJob.name}'`)
+      new Runner(this.logger, this.database, dbJob, jobClass).run()
     })
   }
 }

@@ -27,7 +27,7 @@ export class Runner implements RunnerInterface {
     try {
       await this.exec()
     } catch (e) {
-      this.logger.debug(`Job "${this.jobName}" finished with error.`)
+      this.logger.debug(`Scheduler - Job "${this.jobName}" finished with error.`)
       this.logger.error(e)
     } finally {
       await this.reschedule()
@@ -39,11 +39,11 @@ export class Runner implements RunnerInterface {
     const client = this.database.connection()
     const locked = await client.getAdvisoryLock(this.jobName)
     if (!locked) {
-      this.logger.debug(`Job "${this.jobName}" blocked: can't be lock.`)
+      this.logger.debug(`Scheduler - Job "${this.jobName}" blocked: can't be lock.`)
       return false
     }
 
-    this.logger.debug(`Job "${this.jobName}" locked.`)
+    this.logger.debug(`Scheduler - Job "${this.jobName}" locked.`)
     await this.updateJobModel({
       lockedAt: DateTime.now(),
     })
@@ -52,10 +52,10 @@ export class Runner implements RunnerInterface {
   }
 
   private async exec() {
-    this.logger.debug(`Job "${this.jobName}" started.`)
+    this.logger.debug(`Scheduler - Job "${this.jobName}" started.`)
     const data = this.jobModel.data ? JSON.parse(JSON.stringify(this.jobModel.data)) : undefined
     await this.jobHandler.handle(data)
-    this.logger.debug(`Job "${this.jobName}" finished.`)
+    this.logger.debug(`Scheduler - Job "${this.jobName}" finished.`)
   }
 
   private async reschedule() {
@@ -66,7 +66,9 @@ export class Runner implements RunnerInterface {
       lastFinishedAt: DateTime.now(),
       nextRunAt: DateTime.fromISO(schedule.next().toISOString()),
     })
-    this.logger.debug(`Job "${this.jobName}" rescheduled at '${this.jobModel.nextRunAt}'.`)
+    this.logger.debug(
+      `Scheduler - Job "${this.jobName}" rescheduled at '${this.jobModel.nextRunAt}'.`
+    )
   }
 
   private async unlock() {
@@ -77,7 +79,7 @@ export class Runner implements RunnerInterface {
     const client = this.database.connection()
     await client.releaseAdvisoryLock(this.jobName)
 
-    this.logger.debug(`Job "${this.jobName}" released.`)
+    this.logger.debug(`Scheduler - Job "${this.jobName}" released.`)
   }
 
   private async updateJobModel(params: Partial<Omit<DBJobModel, 'id'>>) {

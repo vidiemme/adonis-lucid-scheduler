@@ -1,14 +1,15 @@
 import { DateTime } from 'luxon'
 
-import { SchedulerContract } from '@ioc:Vidiemme/Scheduler/Scheduler'
+import { SchedulerInterface } from '@ioc:Vidiemme/Scheduler/Scheduler'
 import { DBJobModel, JobMapType } from '@ioc:Vidiemme/Scheduler/Job'
-import { RunnerContract } from '@ioc:Vidiemme/Scheduler/Runner'
 import { DatabaseContract } from '@ioc:Adonis/Lucid/Database'
+import { Runner } from '@ioc:Vidiemme/Scheduler/Runner'
+import { LoggerContract } from '@ioc:Adonis/Core/Logger'
 import { timeMatches } from './utils'
 
-export class Scheduler implements SchedulerContract {
+export class Scheduler implements SchedulerInterface {
   constructor(
-    protected runnerInstance: RunnerContract,
+    protected logger: LoggerContract,
     protected database: DatabaseContract,
     protected jobMap: JobMapType
   ) {}
@@ -33,7 +34,7 @@ export class Scheduler implements SchedulerContract {
         return
       }
 
-      this.runnerInstance.run(dbJob, new jobClass())
+      new Runner(this.logger, this.database).run(dbJob, jobClass)
     })
   }
 }

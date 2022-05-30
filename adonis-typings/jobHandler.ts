@@ -1,9 +1,12 @@
 declare module '@ioc:Vidiemme/Scheduler/Job' {
-  export interface JobHandlerContract {
-    handle(param?: { [key: string]: any }): void
+  type Primitive = string | boolean | number | bigint | symbol | null | undefined
+  export type JobParams = { [key: string]: Primitive }
+
+  export interface JobHandlerInterface {
+    handle(param?: JobParams): void
   }
 
-  export class JobHandler implements JobHandlerContract {
-    public handle(param?: { [key: string]: any }): void
+  export class JobHandler implements JobHandlerInterface {
+    public handle(param?: JobParams): void
   }
 }

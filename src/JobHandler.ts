@@ -1,5 +1,5 @@
-import { JobHandlerContract } from '@ioc:Vidiemme/Scheduler/Job'
+import { JobHandlerInterface, JobParams } from '@ioc:Vidiemme/Scheduler/Job'
 
-export abstract class JobHandler implements JobHandlerContract {
-  abstract handle(param?: { [key: string]: any }): void
+export abstract class JobHandler implements JobHandlerInterface {
+  abstract handle(param?: JobParams): void
 }

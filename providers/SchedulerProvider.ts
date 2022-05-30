@@ -26,32 +26,20 @@ export default class SchedulerProvider {
   private registerRunner() {
     this.app.container.singleton('Vidiemme/Scheduler/Runner', () => {
       const { Runner } = require('../src/Runner')
-
-      const logger = this.app.container.use('Adonis/Core/Logger')
-      const database = this.app.container.use('Adonis/Lucid/Database')
-
-      const runnerInstance = new Runner(logger, database)
-
-      return {
-        Runner,
-        RunnerInstance: runnerInstance,
-      }
+      return { Runner }
     })
   }
 
   private registerScheduler() {
     this.app.container.singleton('Vidiemme/Scheduler/Scheduler', () => {
-      const { JobMap } = require('../src/JobMap')
       const { Scheduler } = require('../src/Scheduler')
 
-      const Database = this.app.container.use('Adonis/Lucid/Database')
-      const { RunnerInstance } = this.app.container.use('Vidiemme/Scheduler/Runner')
-
-      const schedulerInstance = new Scheduler(RunnerInstance, Database, JobMap)
+      const { JobMap } = this.app.container.resolveBinding('Vidiemme/Scheduler/Job')
+      const logger = this.app.container.resolveBinding('Adonis/Core/Logger')
+      const database = this.app.container.resolveBinding('Adonis/Lucid/Database')
 
       return {
-        Scheduler,
-        SchedulerInstance: schedulerInstance,
+        Scheduler: new Scheduler(logger, database, JobMap),
       }
     })
   }
@@ -69,7 +57,7 @@ export default class SchedulerProvider {
    * Called when all bindings are in place
    */
   public boot(): void {
-    const { SchedulerInstance } = this.app.container.use('Vidiemme/Scheduler/Scheduler')
-    scheduleJob('* * * * *', SchedulerInstance.checkJobs.bind(SchedulerInstance))
+    const { Scheduler } = this.app.container.resolveBinding('Vidiemme/Scheduler/Scheduler')
+    scheduleJob('* * * * *', Scheduler.checkJobs.bind(Scheduler))
   }
 }

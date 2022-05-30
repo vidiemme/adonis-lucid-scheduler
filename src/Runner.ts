@@ -1,21 +1,21 @@
 import parser from 'cron-parser'
 import { DateTime } from 'luxon'
 
-import { JobHandlerContract, DBJobModel } from '@ioc:Vidiemme/Scheduler/Job'
-import { RunnerContract } from '@ioc:Vidiemme/Scheduler/Runner'
+import { JobHandler, DBJobModel } from '@ioc:Vidiemme/Scheduler/Job'
+import { RunnerInterface } from '@ioc:Vidiemme/Scheduler/Runner'
 import { DatabaseContract } from '@ioc:Adonis/Lucid/Database'
 import { LoggerContract } from '@ioc:Adonis/Core/Logger'
 
-export class Runner implements RunnerContract {
+export class Runner implements RunnerInterface {
   protected jobName: string
   protected jobModel: DBJobModel
-  protected jobHandler: JobHandlerContract
+  protected jobHandler: JobHandler
 
   constructor(protected logger: LoggerContract, protected database: DatabaseContract) {}
 
-  public async run(jobModel: DBJobModel, jobHandler: JobHandlerContract) {
+  public async run(jobModel: DBJobModel, jobHandler: typeof JobHandler) {
     this.jobModel = jobModel
-    this.jobHandler = jobHandler
+    this.jobHandler = new jobHandler()
 
     this.jobName = `${this.jobModel.id}_${this.jobModel.name}`
 
@@ -53,7 +53,7 @@ export class Runner implements RunnerContract {
 
   private async exec() {
     this.logger.debug(`Job "${this.jobName}" started.`)
-    const data = this.jobModel.data ? JSON.parse(this.jobModel.data) : undefined
+    const data = this.jobModel.data ? JSON.parse(JSON.stringify(this.jobModel.data)) : undefined
     await this.jobHandler.handle(data)
     this.logger.debug(`Job "${this.jobName}" finished.`)
   }

@@ -21,22 +21,24 @@ export class Scheduler implements SchedulerInterface {
         query.whereNull('nextRunAt').orWhere('nextRunAt', '<=', DateTime.now().toSQL())
       })
 
-    dbJobs.forEach((dbJob) => {
-      const jobClass = this.jobMap.get(dbJob.name)
-      if (!jobClass) {
-        this.logger.debug(`Scheduler - Job '${dbJob.name}' not in list`)
-        // job not in list
-        return
-      }
+    await Promise.all(
+      dbJobs.map(async (dbJob) => {
+        const jobClass = this.jobMap.get(dbJob.name)
+        if (!jobClass) {
+          this.logger.debug(`Scheduler - Job '${dbJob.name}' not in list`)
+          // job not in list
+          return
+        }
 
-      if (!timeMatches(dbJob.cron)) {
-        // the cron job does not match the current date, hour and minute
-        // seconds not supported
-        return
-      }
+        if (!timeMatches(dbJob.cron)) {
+          // the cron job does not match the current date, hour and minute
+          // seconds not supported
+          return
+        }
 
-      this.logger.debug(`Scheduler - Running job '${dbJob.name}'`)
-      new Runner(this.logger, this.database, dbJob, jobClass).run()
-    })
+        this.logger.debug(`Scheduler - Running job '${dbJob.name}'`)
+        new Runner(this.logger, this.database, dbJob, jobClass).run()
+      })
+    )
   }
 }

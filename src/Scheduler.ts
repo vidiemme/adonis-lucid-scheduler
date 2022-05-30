@@ -1,11 +1,10 @@
 import { DateTime } from 'luxon'
 
-const later = require('@breejs/later')
-
 import { SchedulerContract } from '@ioc:Vidiemme/Scheduler/Scheduler'
 import { DBJobModel, JobMapType } from '@ioc:Vidiemme/Scheduler/Job'
 import { RunnerContract } from '@ioc:Vidiemme/Scheduler/Runner'
 import { DatabaseContract } from '@ioc:Adonis/Lucid/Database'
+import { timeMatches } from './utils'
 
 export class Scheduler implements SchedulerContract {
   constructor(
@@ -28,10 +27,7 @@ export class Scheduler implements SchedulerContract {
         return
       }
 
-      const schedule = later.parse.cron(dbJob.cron)
-      const now = new Date(new Date().setSeconds(0))
-      const valid = later.schedule(schedule).isValid(now)
-      if (!valid) {
+      if (!timeMatches(dbJob.cron)) {
         // the cron job does not match the current date, hour and minute
         // seconds not supported
         return

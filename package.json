@@ -37,7 +37,6 @@
   "homepage": "https://github.com/vidiemme/adonis-lucid-scheduler",
   "dependencies": {
     "@adonisjs/assembler": "^5.4.1",
-    "@breejs/later": "^4.1.0",
     "cron-parser": "^4.2.1",
     "node-schedule": "^2.1.0"
   },

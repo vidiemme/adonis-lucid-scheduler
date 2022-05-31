@@ -1,9 +1,9 @@
 import parser from 'cron-parser'
 import { DateTime } from 'luxon'
 
+import { DatabaseContract, TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
 import { JobHandler, DBJobModel } from '@ioc:Vidiemme/Scheduler/Job'
 import { RunnerInterface } from '@ioc:Vidiemme/Scheduler/Runner'
-import { DatabaseContract } from '@ioc:Adonis/Lucid/Database'
 import { LoggerContract } from '@ioc:Adonis/Core/Logger'
 
 export class Runner implements RunnerInterface {
@@ -24,7 +24,18 @@ export class Runner implements RunnerInterface {
   }
 
   public async run() {
-    const getLock = await this.lock()
+    const trx = await this.database.transaction()
+    try {
+      await this.runWithTransaction(trx)
+      await trx.commit()
+    } catch (e) {
+      this.logger.error(e)
+      await trx.rollback()
+    }
+  }
+
+  private async runWithTransaction(trx: TransactionClientContract) {
+    const getLock = await this.lock(trx)
     if (!getLock) {
       return
     }
@@ -35,21 +46,20 @@ export class Runner implements RunnerInterface {
       this.logger.debug(`Scheduler - Job "${this.jobName}" finished with error.`)
       this.logger.error(e)
     } finally {
-      await this.reschedule()
-      await this.unlock()
+      await this.reschedule(trx)
+      await this.unlock(trx)
     }
   }
 
-  private async lock(): Promise<boolean> {
-    const client = this.database.connection()
-    const locked = await client.getAdvisoryLock(this.jobName)
+  private async lock(trx: TransactionClientContract): Promise<boolean> {
+    const locked = await trx.getAdvisoryLock(this.jobName)
     if (!locked) {
-      this.logger.debug(`Scheduler - Job "${this.jobName}" blocked: can't be lock.`)
+      this.logger.warn(`Scheduler - Job "${this.jobName}" blocked: can't be lock.`)
       return false
     }
 
     this.logger.debug(`Scheduler - Job "${this.jobName}" locked.`)
-    await this.updateJobModel({
+    await this.updateJobModel(trx, {
       lockedAt: DateTime.now(),
     })
 
@@ -63,10 +73,10 @@ export class Runner implements RunnerInterface {
     this.logger.debug(`Scheduler - Job "${this.jobName}" finished.`)
   }
 
-  private async reschedule() {
+  private async reschedule(trx: TransactionClientContract) {
     const schedule = parser.parseExpression(this.jobModel.cron)
 
-    await this.updateJobModel({
+    await this.updateJobModel(trx, {
       lastRunAt: this.jobModel.lockedAt,
       lastFinishedAt: DateTime.now(),
       nextRunAt: DateTime.fromISO(schedule.next().toISOString()),
@@ -76,19 +86,20 @@ export class Runner implements RunnerInterface {
     )
   }
 
-  private async unlock() {
-    await this.updateJobModel({
+  private async unlock(trx: TransactionClientContract) {
+    await this.updateJobModel(trx, {
       lockedAt: null,
     })
 
-    const client = this.database.connection()
-    await client.releaseAdvisoryLock(this.jobName)
-
+    await trx.releaseAdvisoryLock(this.jobName)
     this.logger.debug(`Scheduler - Job "${this.jobName}" released.`)
   }
 
-  private async updateJobModel(params: Partial<Omit<DBJobModel, 'id'>>) {
+  private async updateJobModel(
+    trx: TransactionClientContract,
+    params: Partial<Omit<DBJobModel, 'id'>>
+  ) {
     this.jobModel.merge(params)
-    await this.jobModel.save()
+    await this.jobModel.useTransaction(trx).save()
   }
 }

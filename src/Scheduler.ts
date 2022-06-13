@@ -40,5 +40,12 @@ export class Scheduler implements SchedulerInterface {
         new Runner(this.logger, this.database, dbJob, jobClass).run()
       })
     )
+
+    try {
+      // releasing all lock of the current session
+      await this.database.rawQuery('SELECT RELEASE_ALL_LOCKS();')
+    } catch (e) {
+      this.logger.warn(e)
+    }
   }
 }

@@ -1,3 +1,4 @@
+/// <reference path="./config.ts" />
 /// <reference path="./jobHandler.ts" />
 /// <reference path="./jobMap.ts" />
 /// <reference path="./jobModel.ts" />

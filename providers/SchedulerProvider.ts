@@ -32,6 +32,10 @@ export default class SchedulerProvider {
 
   private registerScheduler() {
     this.app.container.singleton('Vidiemme/Scheduler/Scheduler', () => {
+      const config = this.app.container
+        .resolveBinding('Adonis/Core/Config')
+        .get('scheduler.schedulerConfig')
+
       const { Scheduler } = require('../src/Scheduler')
 
       const { JobMap } = this.app.container.resolveBinding('Vidiemme/Scheduler/Job')
@@ -39,7 +43,7 @@ export default class SchedulerProvider {
       const database = this.app.container.resolveBinding('Adonis/Lucid/Database')
 
       return {
-        Scheduler: new Scheduler(logger, database, JobMap),
+        Scheduler: new Scheduler(logger, database, JobMap, config),
       }
     })
   }

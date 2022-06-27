@@ -1,0 +1,29 @@
+/**
+ * Config source: <https://github.com/vidiemme/adonis-lucid-scheduler/blob/main/templates/config.txt>
+ *
+ * Feel free to let us know via PR, if you find something broken in this config
+ * file.
+ */
+
+import Env from '@ioc:Adonis/Core/Env'
+import { SchedulerConfig } from '@ioc:Vidiemme/Scheduler/Config'
+
+/*
+|--------------------------------------------------------------------------
+| Scheduler
+|--------------------------------------------------------------------------
+|
+*/
+export const schedulerConfig: SchedulerConfig = {
+  /*
+  |--------------------------------------------------------------------------
+  | Lock prefix
+  |--------------------------------------------------------------------------
+  |
+  | Prefix of the lock name that will be used to identify the job.
+  | By default, the project name (read from package.json) and the environment
+  | name are used.
+  |
+  */
+  prefix: `${Env.get('APP_NAME')}_${Env.get('NODE_ENV')}`,
+}

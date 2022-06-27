@@ -28,6 +28,26 @@ function makeUsersMigration(
 }
 
 /**
+ * Create the configuration file
+ */
+function addConfigurationFile(
+  projectRoot: string,
+  app: ApplicationContract,
+  sink: typeof sinkStatic
+) {
+  const configPath = app.configPath('scheduler.ts')
+
+  const template = new sink.files.MustacheFile(projectRoot, configPath, getStub('config.txt'))
+  if (template.exists()) {
+    sink.logger.action('create').skipped(`${configPath} file already exists`)
+    return
+  }
+
+  template.apply().commit()
+  sink.logger.action('create').succeeded(configPath)
+}
+
+/**
  * Register preload
  */
 function registerPreload(projectRoot: string, app: ApplicationContract, sink: typeof sinkStatic) {
@@ -59,5 +79,6 @@ export default async function instructions(
   sink: typeof sinkStatic
 ) {
   makeUsersMigration(projectRoot, app, sink)
+  addConfigurationFile(projectRoot, app, sink)
   registerPreload(projectRoot, app, sink)
 }

@@ -1,5 +1,6 @@
 import parser from 'cron-parser'
 import { DateTime } from 'luxon'
+import md5 from 'md5'
 
 import { DatabaseContract, TransactionClientContract } from '@ioc:Adonis/Lucid/Database'
 import { JobHandler, DBJobModel } from '@ioc:Vidiemme/Scheduler/Job'
@@ -14,6 +15,7 @@ export class Runner implements RunnerInterface {
   constructor(
     protected logger: LoggerContract,
     protected database: DatabaseContract,
+    protected prefixJobName: string,
     jobModel: DBJobModel,
     jobHandler: typeof JobHandler
   ) {
@@ -51,8 +53,12 @@ export class Runner implements RunnerInterface {
     }
   }
 
+  private getAdvisoryLockName(): string {
+    return md5(`${this.prefixJobName}_${this.jobName}`)
+  }
+
   private async lock(trx: TransactionClientContract): Promise<boolean> {
-    const locked = await trx.getAdvisoryLock(this.jobName)
+    const locked = await trx.getAdvisoryLock(this.getAdvisoryLockName())
     if (!locked) {
       this.logger.warn(`Scheduler - Job "${this.jobName}" blocked: can't be lock.`)
       return false
@@ -91,7 +97,7 @@ export class Runner implements RunnerInterface {
       lockedAt: null,
     })
 
-    await trx.releaseAdvisoryLock(this.jobName)
+    await trx.releaseAdvisoryLock(this.getAdvisoryLockName())
     this.logger.debug(`Scheduler - Job "${this.jobName}" released.`)
   }
 

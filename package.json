@@ -38,6 +38,7 @@
   "dependencies": {
     "@adonisjs/assembler": "^5.4.1",
     "cron-parser": "^4.2.1",
+    "md5": "^2.3.0",
     "node-schedule": "^2.1.0"
   },
   "peerDependencies": {
@@ -57,6 +58,7 @@
     "@adonisjs/profiler": "^6.0.6",
     "@adonisjs/sink": "^5.2.1",
     "@poppinss/dev-utils": "^1.1.5",
+    "@types/md5": "^2.3.2",
     "@types/node": "^16.9.4",
     "copyfiles": "^2.4.1",
     "eslint": "^7.32.0",

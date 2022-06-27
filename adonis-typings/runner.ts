@@ -11,6 +11,7 @@ declare module '@ioc:Vidiemme/Scheduler/Runner' {
     constructor(
       logger: LoggerContract,
       database: DatabaseContract,
+      prefixJobName: string,
       jobModel: DBJobModel,
       jobHandler: typeof JobHandler
     )

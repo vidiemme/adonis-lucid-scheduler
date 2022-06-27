@@ -2,19 +2,23 @@ import { DateTime } from 'luxon'
 
 import { SchedulerInterface } from '@ioc:Vidiemme/Scheduler/Scheduler'
 import { DBJobModel, JobMapType } from '@ioc:Vidiemme/Scheduler/Job'
+import { SchedulerConfig } from '@ioc:Vidiemme/Scheduler/Config'
 import { DatabaseContract } from '@ioc:Adonis/Lucid/Database'
-import { Runner } from '@ioc:Vidiemme/Scheduler/Runner'
 import { LoggerContract } from '@ioc:Adonis/Core/Logger'
+import { Runner } from '@ioc:Vidiemme/Scheduler/Runner'
 import { timeMatches } from './utils'
 
 export class Scheduler implements SchedulerInterface {
   constructor(
     protected logger: LoggerContract,
     protected database: DatabaseContract,
-    protected jobMap: JobMapType
+    protected jobMap: JobMapType,
+    protected config: SchedulerConfig
   ) {}
 
   public async extractJobs() {
+    const prefixJobName = this.config.prefix
+
     const dbJobs = await DBJobModel.query()
       .whereNull('lockedAt')
       .where((query) => {

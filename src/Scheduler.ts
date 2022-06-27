@@ -41,7 +41,8 @@ export class Scheduler implements SchedulerInterface {
         }
 
         this.logger.debug(`Scheduler - Running job '${dbJob.name}'`)
-        new Runner(this.logger, this.database, dbJob, jobClass).run()
+        const runner = new Runner(this.logger, this.database, prefixJobName, dbJob, jobClass)
+        await runner.run()
       })
     )
 

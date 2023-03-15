@@ -40,16 +40,11 @@ You can also pass metadata in Json format to the `handle` method.
 
 ```typescript
 interface MyCustomInterface {
-    ...
+  ...
 }
 
-public async
-handle(params
-:
-MyCustomInterface
-)
-{
-    // your job here
+public async handle(params: MyCustomInterface) {
+  // your job here
 }
 ```
 

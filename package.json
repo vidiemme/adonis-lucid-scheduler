@@ -1,0 +1,171 @@
+{
+  "name": "@vidiemme/adonis-scheduler",
+  "version": "1.4.0",
+  "description": "Adonis Scheduler",
+  "main": "build/providers/SchedulerProvider.js",
+  "scripts": {
+    "mrm": "mrm --preset=@adonisjs/mrm-preset",
+    "pretest": "npm run lint",
+    "test": "node -r @adonisjs/require-ts/build/register bin/test.ts",
+    "clean": "del-cli build",
+    "copyfiles": "copyfiles \"templates/**/*.txt\" \"instructions.md\" build",
+    "compile": "npm run lint && npm run clean && tsc && npm run copyfiles",
+    "build": "npm run compile",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint . --ext=.ts",
+    "format": "prettier --write .",
+    "commit": "git-cz",
+    "release": "np --message=\"chore(release): %s\"",
+    "version": "npm run build",
+    "sync-labels": "github-label-sync --labels ./node_modules/@adonisjs/mrm-preset/gh-labels.json vidiemme/adonis-lucid-scheduler"
+  },
+  "dependencies": {
+    "cron-parser": "^4.6.0",
+    "md5": "^2.3.0",
+    "node-schedule": "^2.1.0"
+  },
+  "peerDependencies": {
+    "@adonisjs/core": "^5.1.0",
+    "@adonisjs/lucid": "^18.2.0"
+  },
+  "devDependencies": {
+    "@adonisjs/ace": "^11.3.1",
+    "@adonisjs/assembler": "^5.9.3",
+    "@adonisjs/core": "^5.8.7",
+    "@adonisjs/lucid": "^18.2.0",
+    "@adonisjs/mrm-preset": "^5.0.3",
+    "@adonisjs/require-ts": "^2.0.13",
+    "@adonisjs/sink": "^5.4.1",
+    "@types/node": "^18.8.3",
+    "commitizen": "^4.2.5",
+    "copyfiles": "^2.4.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.25.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-adonis": "^2.1.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "github-label-sync": "^2.2.0",
+    "husky": "^8.0.1",
+    "mrm": "^4.1.6",
+    "np": "^7.6.2",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4"
+  },
+  "mrmConfig": {
+    "core": false,
+    "license": "Apache-2.0",
+    "services": [
+      "github-actions"
+    ],
+    "minNodeVersion": "16.13.1",
+    "probotApps": [],
+    "runGhActionsOnWindows": false
+  },
+  "types": "build/adonis-typings/index.d.ts",
+  "files": [
+    "build/adonis-typings",
+    "build/src",
+    "build/providers",
+    "build/templates",
+    "build/commands",
+    "build/instructions.md"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "plugin:adonis/typescriptPackage",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-member-accessibility": "off",
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build"
+  ],
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false,
+    "quoteProps": "consistent",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 100
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "np": {
+    "contents": ".",
+    "anyBranch": false
+  },
+  "publishConfig": {
+    "tag": "latest",
+    "access": "public"
+  },
+  "keywords": [
+    "adonisjs",
+    "adonis-scheduler"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vidiemme/adonis-lucid-scheduler.git"
+  },
+  "author": "Vidiemme",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/vidiemme/adonis-lucid-scheduler/-/issues"
+  },
+  "homepage": "https://github.com/vidiemme/adonis-lucid-scheduler",
+  "adonisjs": {
+    "instructionsMd": "./build/instructions.md",
+    "providers": [
+      "@vidiemme/adonis-scheduler"
+    ],
+    "types": "@vidiemme/adonis-scheduler",
+    "commands": [
+      "@vidiemme/adonis-scheduler/build/commands"
+    ],
+    "templates": {
+      "basePath": "./build/templates",
+      "config": [
+        {
+          "src": "config/scheduler.txt",
+          "dest": "scheduler"
+        }
+      ],
+      "database": [
+        {
+          "src": "migrations/createJobTable.txt",
+          "dest": "migrations/946684800000_create_job_table"
+        }
+      ],
+      "start": [
+        {
+          "src": "start/scheduler.txt",
+          "dest": "scheduler"
+        }
+      ]
+    },
+    "preloads": [
+      {
+        "file": "./start/scheduler",
+        "environment": [
+          "web"
+        ]
+      }
+    ]
+  }
+}

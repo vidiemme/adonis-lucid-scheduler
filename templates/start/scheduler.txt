@@ -1,0 +1,12 @@
+import { JobMap } from '@ioc:Vidiemme/Scheduler/Job'
+
+/*
+|--------------------------------------------------------------------------
+| Scheduler
+|--------------------------------------------------------------------------
+|
+| This file is dedicated to the definition of jobs.
+|
+| e.g:
+| JobMap.set('jobNameInDB', JobClass)
+*/

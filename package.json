@@ -1,6 +1,6 @@
 {
   "name": "@vidiemme/adonis-scheduler",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Adonis Scheduler",
   "main": "build/providers/SchedulerProvider.js",
   "scripts": {
@@ -45,7 +45,6 @@
     "eslint-plugin-adonis": "^2.1.1",
     "eslint-plugin-prettier": "^4.2.1",
     "github-label-sync": "^2.2.0",
-    "husky": "^8.0.1",
     "mrm": "^4.1.6",
     "np": "^7.6.2",
     "prettier": "^2.7.1",
